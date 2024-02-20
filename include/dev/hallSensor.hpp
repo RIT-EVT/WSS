@@ -9,9 +9,9 @@ namespace hallSensor {
     class hallSensor {
         // Define the states of the wheel speed
         enum WheelSpeedState {
-            STOP,
-            MAINTAIN,
-            DECAY
+            STOP = 0,  // First pulse or wheel is dead
+            MAINTAIN = 1, // Wheel is spinning at a constant speed or speeding up
+            DECAY = 2 // Wheel is slowing down
         };
 
     public:
