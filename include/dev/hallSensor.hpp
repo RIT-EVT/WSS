@@ -20,7 +20,7 @@ public:
     // Constructor (take a GPIO instance and the radius of the wheel)
     HallSensor(IO::GPIO& gpio, uint32_t wheelRadius);
 
-    void update(); // Update the wheel speed
+    uint32_t update(); // Update the wheel speed
 
     // Get the current speed of the wheel
     uint32_t getSpeed(uint32_t timeDiff);
