@@ -20,7 +20,7 @@ int main() {
    IO::UART& uart = IO::getUART<IO::Pin::UART_TX, IO::Pin::UART_RX>(9600);
 
     // Setup GPIO
-    IO::GPIO& gpio = IO::getGPIO<IO::Pin::GPIO_0, IO::Pin::GPIO_1>();
+    IO::GPIO& gpio = IO::getGPIO<IO::Pin::PA_0>();
 
     // Setup Hall Sensor
     constexpr uint32_t WHEEL_RADIUS = 10;
