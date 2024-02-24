@@ -1,77 +1,67 @@
 #include "EVT/dev/RTC.hpp"
 #include "EVT/manager.hpp"
 #include <DEV/hallSensor.hpp>
-#include <EVT/dev/RTCTimer.hpp>
-#include <EVT/utils/time.hpp>
 #include <EVT/io/GPIO.hpp>
 
-using namespace EVT::core::IO;
-using namespace EVT::core::DEV;
+namespace IO = EVT::core::IO;
+namespace DEV = EVT::core::DEV;
+
+constexpr uint32_t THRESHOLD = 100; // Threshold for wheel speed
+constexpr uint32_t THETA = 2; // Constant for wheel speed calculation
 
 namespace hallSensor {
 
-    RTC& clock = getRTC();
+    DEV::RTC& clock = DEV::getRTC();
 
-    HallSensor::HallSensor(GPIO* gpio, uint32_t wheelRadius) {
-        this->gpio = gpio;
-        this->pulseCount = 0;
-        this->wheelSpeed = 0;
-        this->state = WheelSpeedState::STOP;
-        this->wheelRadius = wheelRadius;
+
+    HallSensor::HallSensor(IO::GPIO& gpio, uint32_t wheelRadius): gpio((IO::GPIO&) gpio), wheelRadius(wheelRadius) {
         this->prevTime = 0;
-        this->timer = RTCTimer(clock, 1000);
+        this->wheelSpeed = 0;
+        this->state = WheelSpeedState::STOPPED;
+        this->isHigh = false;
     }
 
-    void HallSensor::begin() {
-        // Set the GPIO pin as input
-    }
-
-    bool HallSensor::hasCompletedRotation() {
-        return calculateSpecifiedTime() >= timeForOneRotation;
-    }
-
-    void HallSensor::update() {
-        GPIO::State pinState = gpio->readPin();
-
-        if (pinState == GPIO::State::HIGH){
-            if (state == WheelSpeedState::STOP) {
-                // First pulse, set the state to MAINTAIN
-                state = WheelSpeedState::MAINTAIN;
-            }
-            pulseCount++;
-            wheelSpeed = calculateSpeed();
-            // Check if a full rotation is completed
-            if (hasCompletedRotation()) {
-                // Restart the timer for the next rotation
-                timer.reloadTimer();
-            }
-        } else {
-            // Implement linear decay if no rotation happens within the specified time
-            if (state != WheelSpeedState::STOP && !hasCompletedRotation()) {
-                state = WheelSpeedState::DECAY;
-                wheelSpeed--; // Perform linear decay
-                if (wheelSpeed < 0) {
-                    wheelSpeed = 0; // Ensure speed does not go negative
+    void HallSensor::update(){
+        switch (state) {
+            case WheelSpeedState::STOPPED:
+                if (isHigh) {
+                    // should never get here
+                    break;
                 }
-            }
+                else{
+                    prevTime = clock.getTime();
+                    isHigh = true;
+                    state = WheelSpeedState::MAINTAIN;
+                }
+            case WheelSpeedState::MAINTAIN:
+                if (gpio.readPin() == EVT::core::IO::GPIO::State::HIGH) {
+                    if(isHigh) {
+                        break;
+                    }
+                    else{
+                        uint32_t timeDiff = clock.getTime() - prevTime;
+                        uint32_t possibleSpeed = getSpeed(timeDiff);
+                        if (possibleSpeed > THRESHOLD){
+                            state = WheelSpeedState::STOPPED;
+                            prevTime = 0;
+                            wheelSpeed = 0;
+                            isHigh = false;
+                        }
+                        else if (possibleSpeed < wheelSpeed){
+                            wheelSpeed = possibleSpeed;
+                        }
+                        else{
+                            //do nothing
+                        }
+                    }
+                }
+
         }
     }
 
-    uint32_t HallSensor::getSpeed() {
-        return this->wheelSpeed;
+    uint32_t HallSensor::getSpeed(uint32_t timeDiff){
+        return THETA * wheelRadius / timeDiff;
     }
 
-    uint32_t HallSensor::calculateSpecifiedTime() {
-        return timer.getTime() - prevTime;
-    }
-
-    uint32_t HallSensor::calculateSpeed() {
-        // Calculate speed based on pulse count and time elapsed
-        uint32_t specifiedTime = calculateSpecifiedTime();
-        double rotations = pulseCount / double(360); // Assuming 1 pulse = 1 rotation
-        double distance = 2 * 3.14159 * wheelRadius * rotations; // Circumference = 2 * pi * radius
-        double speed = distance / specifiedTime; // Speed = Distance / Time
-        return static_cast<uint32_t>(speed);
-    }
 
 } // namespace hallSensor

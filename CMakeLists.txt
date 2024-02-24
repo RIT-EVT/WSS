@@ -1,5 +1,5 @@
 ###############################################################################
-# Top level CMakeList for building the *EVT_BOARD_NAME* source code
+# Top level CMakeList for building the WSS source code
 ###############################################################################
 cmake_minimum_required(VERSION 3.15)
 
@@ -55,24 +55,22 @@ file(STRINGS version.txt BOARD_VERSION)
 project(${BOARD_LIB_NAME}
         VERSION ${BOARD_VERSION}
         LANGUAGES CXX C
-        )
+)
 
-add_library(${PROJECT_NAME} STATIC
-        targets/hallSensor/main.cpp
-        include/dev/hallSensor.hpp
-        src/dev/hallSensor.cpp)
+add_library(${PROJECT_NAME} STATIC)
 
 # Add sources
 target_sources(${PROJECT_NAME} PRIVATE
         src/WSS.cpp
-        )
+        src/dev/hallSensor.cpp
+)
 
 ###############################################################################
 # Handle dependencies
 ###############################################################################
 target_link_libraries(${PROJECT_NAME}
         PUBLIC EVT
-        )
+)
 
 ###############################################################################
 # Install and expose library
