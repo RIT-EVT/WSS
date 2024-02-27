@@ -1,9 +1,3 @@
-/**
-* This is a basic sample of using the UART module. The program provides a
-* basic echo functionality where the uart will write back whatever the user
-* enters.
-*/
-
 #include <EVT/io/UART.hpp>
 #include <EVT/manager.hpp>
 #include <EVT/io/pin.hpp>
