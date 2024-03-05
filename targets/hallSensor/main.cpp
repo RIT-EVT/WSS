@@ -14,16 +14,20 @@ int main() {
    IO::UART& uart = IO::getUART<IO::Pin::UART_TX, IO::Pin::UART_RX>(9600);
 
     // Setup GPIO
-    IO::GPIO& gpio = IO::getGPIO<IO::Pin::PA_0>();
+    IO::GPIO& gpio = IO::getGPIO<IO::Pin::PA_1>();
 
     // Setup Hall Sensor
     constexpr uint32_t WHEEL_RADIUS = 10;
-    hallSensor::HallSensor hallSensor(gpio, WHEEL_RADIUS);
+    DEV::RTC& clock = DEV::getRTC();
+    hallSensor::HallSensor hallSensor(gpio, WHEEL_RADIUS, clock);
 
     // Main loop
     while (1) {
+        uart.printf("GPIO State: %d\r\n", gpio.readPin());
         uint32_t timeDiff = hallSensor.update();
-        uart.printf("Wheel speed: %d\n", hallSensor.getSpeed(timeDiff));
-        uart.printf("Time Diff: %d\n", timeDiff);
+        uart.printf("Wheel speed: %d\r\n", hallSensor.getSpeed(timeDiff));
+        uart.printf("Wheel State: %d\r\n", hallSensor.getState());
+        uart.printf("Time Diff: %d\r\n", timeDiff);
+        time::wait(1000);
     }
 }
