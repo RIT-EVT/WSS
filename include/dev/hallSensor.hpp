@@ -13,7 +13,7 @@ class HallSensor {
 
 public:
     enum WheelSpeedState {
-        STOPPED = 0,    // First pulse or wheel is dead
+        STOP = 0,    // First pulse or wheel is dead
         MAINTAIN = 1,   // Wheel is spinning at a constant speed or speeding up
     };
 

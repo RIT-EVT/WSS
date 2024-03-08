@@ -15,7 +15,7 @@ namespace hallSensor {
     HallSensor::HallSensor(IO::GPIO& gpio, uint32_t wheelRadius): gpio((IO::GPIO&) gpio), wheelRadius(wheelRadius) {
         this->prevTime = 0;
         this->wheelSpeed = 0;
-        this->state = WheelSpeedState::STOPPED;
+        this->state = WheelSpeedState::STOP;
         this->isHigh = false;
     }
 
@@ -23,9 +23,8 @@ namespace hallSensor {
         uint32_t timeDiff = 0;
 
         switch (state) {
-            case WheelSpeedState::STOPPED:
+            case WheelSpeedState::STOP:
                 if (isHigh) {
-                    // should never get here
                     break;
                 }
                 else{
@@ -42,7 +41,7 @@ namespace hallSensor {
                         timeDiff = clock.getTime() - prevTime;
                         uint32_t possibleSpeed = getSpeed(timeDiff);
                         if (possibleSpeed > THRESHOLD){
-                            state = WheelSpeedState::STOPPED;
+                            state = WheelSpeedState::STOP;
                             prevTime = 0;
                             wheelSpeed = 0;
                             isHigh = false;
