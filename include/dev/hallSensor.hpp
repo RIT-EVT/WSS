@@ -18,7 +18,7 @@ public:
     };
 
     // Constructor (take a GPIO instance and the radius of the wheel)
-    HallSensor(IO::GPIO& gpio, uint32_t wheelRadius);
+    HallSensor(IO::GPIO& gpio, uint32_t wheelRadius, DEV::RTC& clock);
 
     uint32_t update(); // Update the wheel speed
 
@@ -32,6 +32,7 @@ private:
     uint32_t prevTime;     // Previous time for calculating delta time
     uint32_t wheelSpeed;   // Current speed of the wheel
     WheelSpeedState state; // Current state of the wheel speed
+    DEV::RTC& clock;       // TODO
     bool isHigh;           // If the sensor is currently high
 };
 
