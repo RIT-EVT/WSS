@@ -5,6 +5,7 @@
 #include <DEV/hallSensor.hpp>
 
 namespace IO = EVT::core::IO;
+namespace DEV = EVT::core::DEV;
 
 constexpr IO::Pin INTERRUPT_PIN = IO::Pin::PA_1;
 
