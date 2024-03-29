@@ -4,10 +4,9 @@
 
 namespace IO = EVT::core::IO;
 
-
 namespace hallSensor {
 
-class HallSensor {
+class hallSensor {
 
 public:
     enum WheelSpeedState {
@@ -15,18 +14,13 @@ public:
         MAINTAIN = 1,   // Wheel is spinning at a constant speed or speeding up
     };
 
-    WheelSpeedState update(); // Update the wheel speed
-
     // Constructor (take a GPIO instance and the radius of the wheel)
-    HallSensor(IO::GPIO& gpio, uint32_t wheelRadius, DEV::RTC& clock);
+    hallSensor(IO::GPIO& gpio, uint32_t wheelRadius);
+
+    uint32_t update(); // Update the wheel speed
 
     // Get the current speed of the wheel
     uint32_t getSpeed(uint32_t timeDiff);
-
-    // Get the current state of the wheel
-    WheelSpeedState getState();
-
-    void risingEdgeHandler(IO::GPIO* pin);
 
 
 private:
@@ -35,7 +29,7 @@ private:
     uint32_t prevTime;     // Previous time for calculating delta time
     uint32_t wheelSpeed;   // Current speed of the wheel
     WheelSpeedState state; // Current state of the wheel
-    DEV::RTC& clock;  // RTC Timer for timekeeping
+    bool isHigh;           // Flag to check if the sensor is high
 };
 
 } // namespace hallSensor
