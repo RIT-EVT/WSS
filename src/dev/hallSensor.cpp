@@ -1,16 +1,15 @@
-#include <EVT/dev/RTC.hpp>
+#include <HALf3/stm32f3xx_hal.h>
 #include <DEV/hallSensor.hpp>
 #include <EVT/io/GPIO.hpp>
 
 namespace IO = EVT::core::IO;
-namespace DEV = EVT::core::DEV;
 
 constexpr uint32_t THRESHOLD = 10; // Threshold for wheel speed
 constexpr uint32_t THETA = 2; // Constant for wheel speed calculation
 
 namespace hallSensor {
 
-HallSensor::HallSensor(IO::GPIO& gpio, uint32_t wheelRadius, DEV::RTC& clock): gpio((IO::GPIO&) gpio), wheelRadius(wheelRadius), clock((DEV::RTC&) clock){
+HallSensor::HallSensor(IO::GPIO& gpio, uint32_t wheelRadius): gpio((IO::GPIO&) gpio), wheelRadius(wheelRadius){
     this->prevTime = 0;
     this->wheelSpeed = 0;
     this->state = WheelSpeedState::STOP;
@@ -26,7 +25,7 @@ uint32_t HallSensor::update(){
                 break;
             }
             else{
-                prevTime = clock.getTime();
+                prevTime = HAL_GetTick();
                 isHigh = true;
                 state = WheelSpeedState::MAINTAIN;
             }
@@ -36,7 +35,7 @@ uint32_t HallSensor::update(){
                     break;
                 }
                 else{
-                    timeDiff = clock.getTime() - prevTime;
+                    timeDiff = HAL_GetTick() - prevTime;
                     uint32_t possibleSpeed = getSpeed(timeDiff);
                     if (possibleSpeed > THRESHOLD){
                         state = WheelSpeedState::STOP;
@@ -47,9 +46,6 @@ uint32_t HallSensor::update(){
                     else if (possibleSpeed < wheelSpeed){
                         wheelSpeed = possibleSpeed;
                     }
-                    else{
-                        //do nothing
-                    }
                 }
             }
         return timeDiff;
@@ -57,7 +53,7 @@ uint32_t HallSensor::update(){
 }
 
 uint32_t HallSensor::getSpeed(uint32_t timeDiff){
-    return /*(THETA * wheelRadius) */ timeDiff;
+    return (THETA * wheelRadius) * timeDiff;
 }
 
 
