@@ -3,7 +3,6 @@
 #include <EVT/io/GPIO.hpp>
 
 namespace IO = EVT::core::IO;
-namespace DEV = EVT::core::DEV;
 
 namespace hallSensor {
 

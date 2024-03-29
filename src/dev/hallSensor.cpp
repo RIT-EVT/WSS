@@ -50,6 +50,7 @@ uint32_t hallSensor::update(){
         }
         return timeDiff;
     }
+    return timeDiff;
 }
 
 uint32_t hallSensor::getSpeed(uint32_t timeDiff){
