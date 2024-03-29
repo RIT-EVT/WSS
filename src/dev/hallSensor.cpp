@@ -1,5 +1,5 @@
 #include <HALf3/stm32f3xx_hal.h>
-#include <DEV/hallSensor.hpp>
+#include <dev/hallSensor.hpp>
 #include <EVT/io/GPIO.hpp>
 
 namespace IO = EVT::core::IO;
