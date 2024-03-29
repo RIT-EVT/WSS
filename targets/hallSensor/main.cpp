@@ -2,10 +2,9 @@
 #include <EVT/manager.hpp>
 #include <EVT/io/pin.hpp>
 #include <EVT/io/GPIO.hpp>
-#include <DEV/hallSensor.hpp>
+#include <dev/hallSensor.hpp>
 
 namespace IO = EVT::core::IO;
-namespace DEV = EVT::core::DEV;
 
 constexpr IO::Pin INTERRUPT_PIN = IO::Pin::PA_1;
 
