@@ -1,10 +1,8 @@
 #pragma once
 
 #include <EVT/io/GPIO.hpp>
-#include <EVT/DEV/RTCTimer.hpp>
 
 namespace IO = EVT::core::IO;
-namespace DEV = EVT::core::DEV;
 
 
 namespace hallSensor {
@@ -13,7 +11,7 @@ class HallSensor {
 
 public:
     enum WheelSpeedState {
-        STOPPED = 0,    // First pulse or wheel is dead
+        STOP = 0,    // First pulse or wheel is dead
         MAINTAIN = 1,   // Wheel is spinning at a constant speed or speeding up
     };
 

@@ -6,28 +6,55 @@
 
 namespace IO = EVT::core::IO;
 
+constexpr IO::Pin INTERRUPT_PIN = IO::Pin::PA_1;
+
 int main() {
    // Initialize system
    EVT::core::platform::init();
 
    // Setup UART
    IO::UART& uart = IO::getUART<IO::Pin::UART_TX, IO::Pin::UART_RX>(9600);
+   uart.printf("UART Initialized\r\n");
 
-    // Setup GPIO
-    IO::GPIO& gpio = IO::getGPIO<IO::Pin::PA_1>();
 
-    // Setup Hall Sensor
-    constexpr uint32_t WHEEL_RADIUS = 10;
-    DEV::RTC& clock = DEV::getRTC();
-    hallSensor::HallSensor hallSensor(gpio, WHEEL_RADIUS, clock);
+   // Setup GPIO
+   IO::GPIO& interruptGPIO = IO::getGPIO<INTERRUPT_PIN>(
+       IO::GPIO::Direction::INPUT);
+   IO::GPIO& interruptGPIO2 = IO::getGPIO<EVT::core::IO::Pin::PA_0>(
+       IO::GPIO::Direction::INPUT);
 
-    // Main loop
-    while (1) {
-        uart.printf("GPIO State: %d\r\n", gpio.readPin());
-        uint32_t timeDiff = hallSensor.update();
-        uart.printf("Wheel speed: %d\r\n", hallSensor.getSpeed(timeDiff));
-        uart.printf("Wheel State: %d\r\n", hallSensor.getState());
-        uart.printf("Time Diff: %d\r\n", timeDiff);
-        time::wait(1000);
+   uart.printf("GPIO Initialized\r\n");
+
+
+   // Setup Hall Sensor
+   // Wheel radius in inches
+   constexpr uint32_t WHEEL_RADIUS = 15;
+   constexpr uint32_t BACK_WHEEL_RADIUS = 15;
+
+   uint32_t counter = 0;
+   hallSensor::HallSensor hallSensor1(interruptGPIO, WHEEL_RADIUS);
+   hallSensor::HallSensor hallSensor2(interruptGPIO2, BACK_WHEEL_RADIUS);
+
+   // Main loop
+   while (1) {
+       //Check for GPIO READ TESTING
+       if (interruptGPIO.readPin() == IO::GPIO::State::LOW) {
+           uart.printf("GPIO PA_1 PIN LOW DETECTED\n\r");
+           uart.printf("Counter: %d\n\r", counter);
+           counter++;
+       }
+
+       if (interruptGPIO2.readPin() == IO::GPIO::State::LOW) {
+           uart.printf("GPIO PA_0 PIN 2 LOW DETECTED\n\r");
+           uart.printf("Counter: %d\n\r", counter);
+           counter++;
+       }
+
+
+       uint32_t timeDiff = hallSensor1.update();
+       uart.printf("Front Wheel speed (in/s): %d\n", hallSensor1.getSpeed(timeDiff));
+       timeDiff = hallSensor2.update();
+       uart.printf("Back Wheel speed (in/s): %d\n", hallSensor2.getSpeed(timeDiff));
+       uart.printf("Time Diff: %d\n", timeDiff);
     }
 }
