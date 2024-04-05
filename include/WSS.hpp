@@ -48,7 +48,7 @@ public:
     uint8_t getNumElements() override;
 
 private:
-    hallSensor::hallSensor* hallSensors[NUM_HALLSENSORS];
+    hallSensor::hallSensor* hallSensors[NUM_HALLSENSORS]{};
 
     uint32_t timeDifference[NUM_HALLSENSORS] = {0, 0};
     uint32_t wheelSpeeds[NUM_HALLSENSORS] = {0, 0};
@@ -56,7 +56,7 @@ private:
     /**
      * Object Dictionary Size
      */
-    static constexpr uint16_t OBJECT_DICTIONARY_SIZE = 43;
+    static constexpr uint16_t OBJECT_DICTIONARY_SIZE = 24;
 
     /**
      * CAN Open object dictionary

@@ -1,4 +1,4 @@
-#include "WSS.hpp"
+#include <WSS.hpp>
 
 namespace WSS {
 
