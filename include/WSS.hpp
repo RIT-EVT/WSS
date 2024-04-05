@@ -17,7 +17,7 @@ namespace WSS {
  */
 class WSS : public CANDevice {
 public:
-    WSS(hallSensor::hallSensor& hallSensor1, hallSensor::hallSensor& hallSensor2);
+    WSS(DEV::hallSensor& hallSensor1, DEV::hallSensor& hallSensor2);
 
     static constexpr uint16_t NODE_ID = 8;
 
@@ -48,7 +48,7 @@ public:
     uint8_t getNumElements() override;
 
 private:
-    hallSensor::hallSensor* hallSensors[NUM_HALLSENSORS]{};
+    DEV::hallSensor* hallSensors[NUM_HALLSENSORS]{};
 
     uint32_t timeDifference[NUM_HALLSENSORS] = {0, 0};
     uint32_t wheelSpeeds[NUM_HALLSENSORS] = {0, 0};

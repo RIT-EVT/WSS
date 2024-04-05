@@ -7,7 +7,7 @@ namespace IO = EVT::core::IO;
 constexpr uint32_t THRESHOLD = 10;// Threshold for wheel speed
 constexpr uint32_t THETA = 2;     // Constant for wheel speed calculation
 
-namespace hallSensor {
+namespace WSS::DEV {
 
 hallSensor::hallSensor(IO::GPIO& gpio, uint32_t wheelRadius) : gpio((IO::GPIO&) gpio), wheelRadius(wheelRadius) {
     this->prevTime = 0;
@@ -54,4 +54,4 @@ uint32_t hallSensor::getSpeed(uint32_t timeDiff) {
     return (THETA * wheelRadius) * timeDiff;
 }
 
-}// namespace hallSensor
+}// namespace WSS::DEV

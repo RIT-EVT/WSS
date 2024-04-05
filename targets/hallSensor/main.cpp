@@ -30,8 +30,8 @@ int main() {
     constexpr uint32_t BACK_WHEEL_RADIUS = 15;
 
     uint32_t counter = 0;
-    hallSensor::hallSensor hallSensor1(interruptGPIO, WHEEL_RADIUS);
-    hallSensor::hallSensor hallSensor2(interruptGPIO2, BACK_WHEEL_RADIUS);
+    WSS::DEV::hallSensor hallSensor1(interruptGPIO, WHEEL_RADIUS);
+    WSS::DEV::hallSensor hallSensor2(interruptGPIO2, BACK_WHEEL_RADIUS);
 
     // Main loop
     while (1) {

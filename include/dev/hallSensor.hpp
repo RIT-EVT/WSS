@@ -4,7 +4,7 @@
 
 namespace IO = EVT::core::IO;
 
-namespace hallSensor {
+namespace WSS::DEV {
 
 class hallSensor {
 
@@ -31,4 +31,4 @@ private:
     bool isHigh;          // Flag to check if the sensor is high
 };
 
-}// namespace hallSensor
+}// namespace WSS::DEV

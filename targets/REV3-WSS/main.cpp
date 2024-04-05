@@ -56,8 +56,8 @@ int main() {
     constexpr uint32_t WHEEL_RADIUS = 15;
     constexpr uint32_t BACK_WHEEL_RADIUS = 15;
 
-    hallSensor::hallSensor hallSensor1(interruptGPIO, WHEEL_RADIUS);
-    hallSensor::hallSensor hallSensor2(interruptGPIO2, BACK_WHEEL_RADIUS);
+    WSS::DEV::hallSensor hallSensor1(interruptGPIO, WHEEL_RADIUS);
+    WSS::DEV::hallSensor hallSensor2(interruptGPIO2, BACK_WHEEL_RADIUS);
 
     // Setup WSS
     WSS::WSS wss(hallSensor1, hallSensor2);
