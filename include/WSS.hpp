@@ -82,7 +82,6 @@ private:
 
         CO_OBJ_DICT_ENDMARK,
     };
-
 };
 
-}// namespace BOARD_NAME
+}// namespace WSS

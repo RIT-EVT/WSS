@@ -4,14 +4,14 @@
  * enters.
  */
 
-#include <EVT/io/UART.hpp>
-#include <EVT/io/pin.hpp>
-#include <EVT/manager.hpp>
-#include <WSS.hpp>
 #include <EVT/dev/MCUTimer.hpp>
 #include <EVT/io/CANOpenMacros.hpp>
 #include <EVT/io/CANopen.hpp>
+#include <EVT/io/UART.hpp>
+#include <EVT/io/pin.hpp>
+#include <EVT/manager.hpp>
 #include <EVT/utils/log.hpp>
+#include <WSS.hpp>
 
 namespace IO = EVT::core::IO;
 namespace log = EVT::core::log;
