@@ -26,5 +26,4 @@ uint8_t WSS::getNumElements() {
     return OBJECT_DICTIONARY_SIZE;
 }
 
-} // namespace WSS
-
+}// namespace WSS
