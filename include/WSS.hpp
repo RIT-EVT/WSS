@@ -4,7 +4,7 @@
 #include <EVT/io/CANOpenMacros.hpp>
 #include <EVT/io/SPI.hpp>
 #include <co_core.h>
-#include <dev/hallSensor.hpp>
+#include <dev/HallSensor.hpp>
 
 #define NUM_HALLSENSORS 2
 
@@ -17,7 +17,7 @@ namespace WSS {
  */
 class WSS : public CANDevice {
 public:
-    WSS(DEV::hallSensor& hallSensor1, DEV::hallSensor& hallSensor2);
+    WSS(DEV::HallSensor& hallSensor1, DEV::HallSensor& hallSensor2);
 
     static constexpr uint16_t NODE_ID = 8;
 
@@ -48,7 +48,7 @@ public:
     uint8_t getNumElements() override;
 
 private:
-    DEV::hallSensor* hallSensors[NUM_HALLSENSORS]{};
+    DEV::HallSensor* hallSensors[NUM_HALLSENSORS]{};
 
     uint32_t timeDifference[NUM_HALLSENSORS] = {0, 0};
     uint32_t wheelSpeeds[NUM_HALLSENSORS] = {0, 0};

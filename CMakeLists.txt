@@ -62,7 +62,7 @@ add_library(${PROJECT_NAME} STATIC)
 # Add sources
 target_sources(${PROJECT_NAME} PRIVATE
         src/WSS.cpp
-        src/dev/hallSensor.cpp
+        src/dev/HallSensor.cpp
 )
 
 ###############################################################################

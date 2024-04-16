@@ -2,7 +2,7 @@
 
 namespace WSS {
 
-WSS::WSS(DEV::hallSensor& hallSensor1, DEV::hallSensor& hallSensor2) {
+WSS::WSS(DEV::HallSensor& hallSensor1, DEV::HallSensor& hallSensor2) {
     this->hallSensors[0] = &hallSensor1;
     this->hallSensors[1] = &hallSensor2;
 }

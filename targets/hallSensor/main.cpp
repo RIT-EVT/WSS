@@ -2,7 +2,7 @@
 #include <EVT/io/UART.hpp>
 #include <EVT/io/pin.hpp>
 #include <EVT/manager.hpp>
-#include <dev/hallSensor.hpp>
+#include <dev/HallSensor.hpp>
 
 namespace IO = EVT::core::IO;
 
@@ -30,8 +30,8 @@ int main() {
     constexpr uint32_t BACK_WHEEL_RADIUS = 15;
 
     uint32_t counter = 0;
-    WSS::DEV::hallSensor hallSensor1(interruptGPIO, WHEEL_RADIUS);
-    WSS::DEV::hallSensor hallSensor2(interruptGPIO2, BACK_WHEEL_RADIUS);
+    WSS::DEV::HallSensor hallSensor1(interruptGPIO, WHEEL_RADIUS);
+    WSS::DEV::HallSensor hallSensor2(interruptGPIO2, BACK_WHEEL_RADIUS);
 
     // Main loop
     while (1) {
