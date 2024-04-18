@@ -50,7 +50,6 @@ public:
 private:
     DEV::HallSensor* hallSensors[NUM_HALLSENSORS]{};
 
-    uint32_t timeDifference[NUM_HALLSENSORS] = {0, 0};
     uint32_t wheelSpeeds[NUM_HALLSENSORS] = {0, 0};
 
     /**

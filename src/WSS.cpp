@@ -13,8 +13,8 @@ CO_OBJ_T* WSS::getObjectDictionary() {
 
 void WSS::process() {
     for (uint8_t i = 0; i < NUM_HALLSENSORS; i++) {
-        timeDifference[i] = hallSensors[i]->update();
-        wheelSpeeds[i] = hallSensors[i]->getSpeed(timeDifference[i]);
+        hallSensors[i]->update();
+        wheelSpeeds[i] = hallSensors[i]->getSpeed();
     }
 }
 

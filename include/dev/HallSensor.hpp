@@ -18,19 +18,20 @@ public:
     // Constructor (take a GPIO instance and the radius of the wheel)
     HallSensor(IO::GPIO& gpio, uint32_t wheelRadius);
 
-    uint32_t update();// Update the wheel speed
+    void update();// Update the wheel speed
 
     // Get the current speed of the wheel
-    uint32_t getSpeed(uint32_t timeDiff);
+    uint32_t getSpeed();
 
 private:
     IO::GPIO& gpio;       // GPIO instance for the sensor
     uint32_t wheelRadius; // Radius of the wheel
     uint32_t prevTime;    // Previous time for calculating delta time
     uint32_t lastInterval; // Last fully measured interval
-    //uint32_t wheelSpeed;  // Current speed of the wheel
     WheelSpeedState state;// Current state of the wheel
-    bool isActive;          // Flag to check if the sensor is high
+    bool magnetInLastRead;          // Flag to check if the sensor is high
+
+    IO::GPIO::State MAGNET_DETECTED_STATE = IO::GPIO::State::LOW;
 };
 
 }// namespace WSS::DEV

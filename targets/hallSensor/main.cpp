@@ -17,9 +17,9 @@ int main() {
     uart.printf("UART Initialized\r\n");
 
     // Setup GPIO
-    IO::GPIO& interruptGPIO = IO::getGPIO<INTERRUPT_PIN>(
+    IO::GPIO& interruptGPIO = IO::getGPIO<IO::Pin::PA_1>(
         IO::GPIO::Direction::INPUT);
-    IO::GPIO& interruptGPIO2 = IO::getGPIO<EVT::core::IO::Pin::PA_0>(
+    IO::GPIO& interruptGPIO2 = IO::getGPIO<IO::Pin::PA_0>(
         IO::GPIO::Direction::INPUT);
 
     uart.printf("GPIO Initialized\r\n");
@@ -33,25 +33,30 @@ int main() {
     WSS::DEV::HallSensor hallSensor1(interruptGPIO, WHEEL_RADIUS);
     WSS::DEV::HallSensor hallSensor2(interruptGPIO2, BACK_WHEEL_RADIUS);
 
+    uint16_t i = 0;
+
     // Main loop
     while (1) {
         //Check for GPIO READ TESTING
         if (interruptGPIO.readPin() == IO::GPIO::State::LOW) {
-            uart.printf("GPIO PA_1 PIN LOW DETECTED\n\r");
-            uart.printf("Counter: %d\n\r", counter);
+            uart.printf("GPIO PA_1 PIN LOW DETECTED\r\n");
+            uart.printf("Counter: %d\r\n", counter);
             counter++;
         }
 
         if (interruptGPIO2.readPin() == IO::GPIO::State::LOW) {
-            uart.printf("GPIO PA_0 PIN 2 LOW DETECTED\n\r");
-            uart.printf("Counter: %d\n\r", counter);
+            uart.printf("GPIO PA_0 PIN 2 LOW DETECTED\r\n");
+            uart.printf("Counter: %d\r\n", counter);
             counter++;
         }
 
-        uint32_t timeDiff = hallSensor1.update();
-        uart.printf("Front Wheel speed (in/s): %d\n", hallSensor1.getSpeed(timeDiff));
-        timeDiff = hallSensor2.update();
-        uart.printf("Back Wheel speed (in/s): %d\n", hallSensor2.getSpeed(timeDiff));
-        uart.printf("Time Diff: %d\n", timeDiff);
+        hallSensor1.update();
+        hallSensor2.update();
+
+
+        if (i++ == 0) {
+            uart.printf("Front Wheel speed (in/s): %d\r\n", hallSensor1.getSpeed());
+            uart.printf("Back Wheel speed (in/s): %d\r\n", hallSensor2.getSpeed());
+        }
     }
 }
