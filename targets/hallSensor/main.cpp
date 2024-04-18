@@ -53,7 +53,6 @@ int main() {
         hallSensor1.update();
         hallSensor2.update();
 
-
         if (i++ == 0) {
             uart.printf("Front Wheel speed (in/s): %d\r\n", hallSensor1.getSpeed());
             uart.printf("Back Wheel speed (in/s): %d\r\n", hallSensor2.getSpeed());
