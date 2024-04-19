@@ -74,11 +74,12 @@ void HallSensor::update() {
         if (elapsedTime > THRESHOLD) {
             state = WheelSpeedState::STOP;
             prevTime = 0;
+            lastInterval = 0;
             // If the elapsed time since the magnet was last detected exceeds the last interval, record
             // the last interval as if the magnet was just detected because the bike is slowing
             // down, but the exact speed can't be calculated
         } else if (elapsedTime > lastInterval) {
-            lastInterval = now - prevTime;
+            lastInterval = elapsedTime;
         }
         break;
     }
