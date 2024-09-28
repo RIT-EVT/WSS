@@ -19,6 +19,7 @@ HallSensor::HallSensor(IO::GPIO& gpio, uint32_t wheelRadius) : gpio((IO::GPIO&) 
 
 void HallSensor::update() {
     uint32_t now = HAL_GetTick();
+    uint32_t elapsedTime = now - prevTime;
 
     switch (state) {
     case WheelSpeedState::STOP:
@@ -50,7 +51,7 @@ void HallSensor::update() {
 
         // If the magnet hasn't been detected for a significant amount of time, go back to the stop
         // state
-        if (now - prevTime > THRESHOLD) {
+        if (elapsedTime > THRESHOLD) {
             state = WheelSpeedState::STOP;
             prevTime = 0;
         }
@@ -68,7 +69,6 @@ void HallSensor::update() {
             magnetInLastRead = false;
         }
 
-        uint32_t elapsedTime = now - prevTime;
         // If the magnet hasn't been detected for a significant amount of time, go back to the stop
         // state
         if (elapsedTime > THRESHOLD) {

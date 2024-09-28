@@ -18,7 +18,7 @@ namespace log = EVT::core::log;
 namespace time = EVT::core::time;
 namespace DEV = EVT::core::DEV;
 
-// create a can interrupt handler
+// Create a can interrupt handler
 void canInterrupt(IO::CANMessage& message, void* priv) {
     EVT::core::types::FixedQueue<CANOPEN_QUEUE_SIZE, IO::CANMessage>* queue =
         (EVT::core::types::FixedQueue<CANOPEN_QUEUE_SIZE, IO::CANMessage>*) priv;
@@ -44,9 +44,9 @@ int main() {
     IO::UART& uart = IO::getUART<IO::Pin::UART_TX, IO::Pin::UART_RX>(9600);
 
     // Setup GPIO
-    IO::GPIO& interruptGPIO = IO::getGPIO<EVT::core::IO::Pin::PA_1>(
+    IO::GPIO& frontInterruptGPIO = IO::getGPIO<EVT::core::IO::Pin::PA_1>(
         IO::GPIO::Direction::INPUT);
-    IO::GPIO& interruptGPIO2 = IO::getGPIO<EVT::core::IO::Pin::PA_0>(
+    IO::GPIO& backInterruptGPIO = IO::getGPIO<EVT::core::IO::Pin::PA_0>(
         IO::GPIO::Direction::INPUT);
 
     uart.printf("GPIO Initialized\r\n");
@@ -56,8 +56,8 @@ int main() {
     constexpr uint32_t WHEEL_RADIUS = 15;
     constexpr uint32_t BACK_WHEEL_RADIUS = 15;
 
-    WSS::DEV::HallSensor hallSensor1(interruptGPIO, WHEEL_RADIUS);
-    WSS::DEV::HallSensor hallSensor2(interruptGPIO2, BACK_WHEEL_RADIUS);
+    WSS::DEV::HallSensor hallSensor1(frontInterruptGPIO, WHEEL_RADIUS);
+    WSS::DEV::HallSensor hallSensor2(backInterruptGPIO, BACK_WHEEL_RADIUS);
 
     // Setup WSS
     WSS::WSS wss(hallSensor1, hallSensor2);

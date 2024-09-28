@@ -21,30 +21,16 @@ public:
 
     static constexpr uint16_t NODE_ID = 8;
 
-    /**
-     * Gets the object dictionary
-     *
-     * @return an object dictionary
-     */
-    CO_OBJ_T* getObjectDictionary();
 
     /**
      * Updates the temperature values in an array and updates the error array from the TMU object.
      */
     void process();
 
-    /**
-     * Get the device's node ID
-     *
-     * @return The node ID of the can device.
-     */
+    CO_OBJ_T* getObjectDictionary() override;
+
     uint8_t getNodeID() override;
 
-    /**
-     * Get the number of elements in the object dictionary.
-     *
-     * @return The number of elements in the object dictionary
-     */
     uint8_t getNumElements() override;
 
 private:
@@ -58,7 +44,7 @@ private:
     static constexpr uint16_t OBJECT_DICTIONARY_SIZE = 24;
 
     /**
-     * CAN Open object dictionary
+     * CANopen object dictionary
      */
     CO_OBJ_T objectDictionary[OBJECT_DICTIONARY_SIZE + 1] = {
         MANDATORY_IDENTIFICATION_ENTRIES_1000_1014,
