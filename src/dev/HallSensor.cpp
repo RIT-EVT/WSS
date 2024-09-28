@@ -40,7 +40,7 @@ void HallSensor::update() {
             if (!magnetInLastRead) {
                 // If the magnet is detected for the second time, record the time and the first
                 // interval and start maintaining
-                lastInterval = now - prevTime;
+                lastInterval = elapsedTime;
                 prevTime = now;
                 magnetInLastRead = true;
                 state = WheelSpeedState::MAINTAIN;
@@ -61,7 +61,7 @@ void HallSensor::update() {
         if (gpio.readPin() == MAGNET_DETECTED_STATE) {
             if (!magnetInLastRead) {
                 // If the magnet is newly detected, record the time and interval
-                lastInterval = now - prevTime;
+                lastInterval = elapsedTime;
                 prevTime = now;
                 magnetInLastRead = true;
             }
