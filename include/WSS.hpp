@@ -21,7 +21,6 @@ public:
 
     static constexpr uint16_t NODE_ID = 8;
 
-
     /**
      * Updates the temperature values in an array and updates the error array from the TMU object.
      */
