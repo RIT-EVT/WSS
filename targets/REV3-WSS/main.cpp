@@ -1,7 +1,5 @@
 /**
- * This is a basic sample of using the UART module. The program provides a
- * basic echo functionality where the uart will write back whatever the user
- * enters.
+ * This is a program that senses the speed of both wheels on the bike.
  */
 
 #include <EVT/dev/MCUTimer.hpp>
