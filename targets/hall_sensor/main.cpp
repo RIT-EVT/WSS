@@ -27,11 +27,9 @@ int main() {
     // Setup Hall Sensor
     // Wheel radius in inches
     constexpr uint32_t WHEEL_RADIUS = 15;
-    constexpr uint32_t BACK_WHEEL_RADIUS = 15;
 
     uint32_t counter = 0;
-    WSS::DEV::HallSensor hallSensor1(interruptGPIO, WHEEL_RADIUS);
-    WSS::DEV::HallSensor hallSensor2(interruptGPIO2, BACK_WHEEL_RADIUS);
+    WSS::DEV::HallSensor hallSensor(interruptGPIO, WHEEL_RADIUS);
 
     uint16_t i = 0;
 
@@ -50,12 +48,10 @@ int main() {
             counter++;
         }
 
-        hallSensor1.update();
-        hallSensor2.update();
+        hallSensor.update();
 
         if (i++ == 0) {
-            uart.printf("Front Wheel speed (in/s): %d\r\n", hallSensor1.getSpeed());
-            uart.printf("Back Wheel speed (in/s): %d\r\n", hallSensor2.getSpeed());
+            uart.printf("Wheel speed (in/s): %d\r\n", hallSensor.getSpeed());
         }
     }
 }
