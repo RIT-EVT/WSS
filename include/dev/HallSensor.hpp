@@ -23,8 +23,12 @@ public:
     // Get the current speed of the wheel
     uint32_t getSpeed();
 
+    // Get the last interval of one full rotation of the wheel
+    uint32_t getRawInterval();
+
 private:
-    IO::GPIO& gpio;       // GPIO instance for the sensor
+    /** GPIO instance for the sensor */
+    IO::GPIO& gpio;
     uint32_t wheelRadius; // Radius of the wheel
     uint32_t prevTime;    // Previous time for calculating delta time
     uint32_t lastInterval;// Last fully measured interval

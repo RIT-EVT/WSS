@@ -1,3 +1,7 @@
+/**
+ * This is a test program for the hall sensor.
+ */
+
 #include <EVT/io/GPIO.hpp>
 #include <EVT/io/UART.hpp>
 #include <EVT/io/pin.hpp>
@@ -51,7 +55,7 @@ int main() {
         hallSensor.update();
 
         if (i++ == 0) {
-            uart.printf("Wheel speed (in/s): %d\r\n", hallSensor.getSpeed());
+            uart.printf("Wheel speed (in/s): %d\r\n", hallSensor.getRawInterval());
         }
     }
 }

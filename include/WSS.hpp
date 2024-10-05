@@ -33,10 +33,10 @@ public:
     uint8_t getNumElements() override;
 
 private:
-    // This is an array of the hall sensors for the front and back sensor
+    /** This is an array of the hall sensors for the front and back sensor */
     DEV::HallSensor* hallSensors[NUM_HALLSENSORS]{};
 
-    // This is an array of wheel speeds for the front and back wheel
+    /** This is an array of wheel speeds for the front and back wheel */
     uint32_t wheelSpeeds[NUM_HALLSENSORS] = {0, 0};
 
     /**

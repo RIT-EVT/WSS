@@ -1,5 +1,6 @@
 /**
  * This is a program that senses the speed of both wheels on the bike.
+ * This is the main target for the board.
  */
 
 #include <EVT/dev/MCUTimer.hpp>

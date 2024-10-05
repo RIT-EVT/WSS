@@ -6,7 +6,6 @@ namespace IO = EVT::core::IO;
 
 // TODO Tune these values
 constexpr uint32_t THRESHOLD = 10000;// Threshold for wheel speed
-constexpr uint32_t THETA = 2;        // Constant for wheel speed calculation
 
 namespace WSS::DEV {
 
@@ -85,9 +84,29 @@ void HallSensor::update() {
     }
 }
 
-uint32_t HallSensor::getSpeed() {
-    // TODO Calculate speed
+uint32_t HallSensor::getRawInterval() {
     return lastInterval;
+}
+
+uint32_t HallSensor::getSpeed() {
+    if (state == WheelSpeedState::STOP) {
+        // The wheel isn't moving, so its speed is zero.
+        return 0;
+    }
+
+    /*
+     * The speed of the wheel in revolutions per minute.
+     * lastInterval is the time that it takes for one full revolution of the wheel
+     * in milliseconds, so converting that to RPM is just dividing 60000 by lastInterval.
+     */
+    const uint32_t rpm = 60000 / lastInterval;
+    /*
+     * The speed of the bike in miles per hour.
+     * RPM * (circumference in inches (2 * pi * wheelRadius) / 1 rotation) * (1 mile / 63360 inches) * (60 minutes / hour)
+     * is what calculates the speed in mph.
+     */
+    const uint32_t speed = static_cast<uint32_t>(rpm * wheelRadius * 2 * 3.1415926535 * 60) / 63360;
+    return speed;
 }
 
 }// namespace WSS::DEV
