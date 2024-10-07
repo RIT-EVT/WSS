@@ -29,11 +29,16 @@ public:
 private:
     /** GPIO instance for the sensor */
     IO::GPIO& gpio;
-    uint32_t wheelRadius; // Radius of the wheel
-    uint32_t prevTime;    // Previous time for calculating delta time
-    uint32_t lastInterval;// Last fully measured interval
-    WheelSpeedState state;// Current state of the wheel
-    bool magnetInLastRead;// Flag to check if the sensor is high
+    uint32_t wheelRadius;
+    /** Radius of the wheel */
+    uint32_t prevTime;
+    /** Previous time for calculating delta time */
+    uint32_t lastInterval;
+    /** Last fully measured interval */
+    WheelSpeedState state;
+    /** Current state of the wheel */
+    bool magnetInLastRead;
+    /** Flag to check if the sensor is high */
 
     IO::GPIO::State MAGNET_DETECTED_STATE = IO::GPIO::State::LOW;
 };
