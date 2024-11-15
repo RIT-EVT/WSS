@@ -50,6 +50,9 @@ int main() {
 
     uart.printf("GPIO Initialized\r\n");
 
+    // Initialize logger
+    log::LOGGER.setUART(&uart);
+
     // Setup Hall Sensor
     // Wheel radius in inches
     constexpr uint32_t WHEEL_RADIUS = 15;
@@ -68,7 +71,7 @@ int main() {
     // And generally creating the CANopen stack node which is the interface
     // between the application (the code we write) and the physical CAN network
     ///////////////////////////////////////////////////////////////////////////
-
+    ///
     // Will store CANopen messages that will be populated by the EVT-core CAN
     // interrupt
     EVT::core::types::FixedQueue<CANOPEN_QUEUE_SIZE, IO::CANMessage> canOpenQueue;

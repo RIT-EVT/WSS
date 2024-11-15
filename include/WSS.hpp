@@ -13,7 +13,7 @@ using namespace EVT::core::IO;
 namespace WSS {
 
 /**
- * This is an example of a class for a board
+ * This is the main class for the Wheel Speed Sensor
  */
 class WSS : public CANDevice {
 public:
@@ -37,7 +37,7 @@ private:
     DEV::HallSensor* hallSensors[NUM_HALLSENSORS]{};
 
     /** This is an array of wheel speeds for the front and back wheel */
-    uint32_t wheelSpeeds[NUM_HALLSENSORS] = {0, 0};
+    uint16_t wheelSpeeds[NUM_HALLSENSORS] = {0, 0};
 
     /**
      * Object Dictionary Size

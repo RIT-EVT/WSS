@@ -1,11 +1,14 @@
 #include <EVT/io/GPIO.hpp>
+#include <EVT/utils/log.hpp>
 #include <HALf3/stm32f3xx_hal.h>
 #include <dev/HallSensor.hpp>
+#include <string>
+#include <valarray>
 
 namespace IO = EVT::core::IO;
 
 // TODO Tune these values
-constexpr uint32_t THRESHOLD = 10000;// Threshold for wheel speed
+constexpr uint32_t THRESHOLD = 5000;// Threshold for wheel speed
 
 namespace WSS::DEV {
 
@@ -16,36 +19,46 @@ HallSensor::HallSensor(IO::GPIO& gpio, uint32_t wheelRadius) : gpio((IO::GPIO&) 
     this->magnetInLastRead = false;
 }
 
+/**
+ *
+ * 1: Use a separate nucleo to send a 3.3V pulse to the nucleo running THIS every x amount of time to test
+ * the algorithm reliably. by setting whatever pin to high and then to low (good luck).
+ *  coded in the 'blink' part of rampup because i didn't know how to make new project thing configuration
+ * 2: FIX THE ALGORITHM
+ *
+ */
+
 void HallSensor::update() {
     uint32_t now = HAL_GetTick();
     uint32_t elapsedTime = now - prevTime;
 
+    // The magnet is detected if the previous gpio pin reading is the same as the current gpio
+    // pin reading
+    const bool magnetDetected = gpio.readPin() == MAGNET_DETECTED_STATE;
+    bool magnetDetectedNow = false;
+    if (!magnetWasDetected && magnetDetected != magnetInLastRead && magnetDetected) {
+        magnetWasDetected = true;
+        magnetDetectedNow = true;
+    } else if (magnetWasDetected && magnetDetected == magnetInLastRead) {
+        magnetWasDetected = false;
+    }
+    magnetInLastRead = magnetDetected;
+
     switch (state) {
     case WheelSpeedState::STOP:
-        if (gpio.readPin() == MAGNET_DETECTED_STATE) {
-            // If the magnet is detected for the first time, record the time and start initializing
-            if (!magnetInLastRead) {
-                prevTime = now;
-                magnetInLastRead = true;
-                state = WheelSpeedState::INITIALIZING;
-            }
-        } else {
-            magnetInLastRead = false;
+        if (magnetDetectedNow) {
+            prevTime = now;
+            state = WheelSpeedState::INITIALIZING;
         }
         break;
 
     case WheelSpeedState::INITIALIZING:
-        if (gpio.readPin() == MAGNET_DETECTED_STATE) {
-            if (!magnetInLastRead) {
-                // If the magnet is detected for the second time, record the time and the first
-                // interval and start maintaining
-                lastInterval = elapsedTime;
-                prevTime = now;
-                magnetInLastRead = true;
-                state = WheelSpeedState::MAINTAIN;
-            }
-        } else {
-            magnetInLastRead = false;
+        if (magnetDetectedNow) {
+            // If the magnet is detected for the second time, record the time and the first
+            // interval and enter the maintain state
+            lastInterval = elapsedTime;
+            prevTime = now;
+            state = WheelSpeedState::MAINTAIN;
         }
 
         // If the magnet hasn't been detected for a significant amount of time, go back to the stop
@@ -57,15 +70,10 @@ void HallSensor::update() {
         break;
 
     case WheelSpeedState::MAINTAIN:
-        if (gpio.readPin() == MAGNET_DETECTED_STATE) {
-            if (!magnetInLastRead) {
-                // If the magnet is newly detected, record the time and interval
-                lastInterval = elapsedTime;
-                prevTime = now;
-                magnetInLastRead = true;
-            }
-        } else {
-            magnetInLastRead = false;
+        if (magnetDetectedNow) {
+            // If the magnet is newly detected, record the time and interval
+            lastInterval = elapsedTime;
+            prevTime = now;
         }
 
         // If the magnet hasn't been detected for a significant amount of time, go back to the stop
@@ -106,6 +114,7 @@ uint32_t HallSensor::getSpeed() {
      * is what calculates the speed in mph.
      */
     const uint32_t speed = static_cast<uint32_t>(rpm * wheelRadius * 2 * 3.1415926535 * 60) / 63360;
+
     return speed;
 }
 

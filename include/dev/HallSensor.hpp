@@ -9,10 +9,10 @@ namespace WSS::DEV {
 class HallSensor {
 
 public:
-    enum WheelSpeedState {
-        STOP = 0,        // First pulse or wheel is dead
-        INITIALIZING = 1,// Setting speed based on first reading
-        MAINTAIN = 2,    // Wheel is spinning at a constant speed or speeding up
+    enum class WheelSpeedState {
+        STOP,        // First pulse or wheel is dead
+        INITIALIZING,// Setting speed based on first reading
+        MAINTAIN,    // Wheel is spinning at a constant speed or speeding up
     };
 
     // Constructor (take a GPIO instance and the radius of the wheel)
@@ -29,18 +29,20 @@ public:
 private:
     /** GPIO instance for the sensor */
     IO::GPIO& gpio;
-    uint32_t wheelRadius;
     /** Radius of the wheel */
-    uint32_t prevTime;
+    uint32_t wheelRadius;
     /** Previous time for calculating delta time */
-    uint32_t lastInterval;
+    uint32_t prevTime;
     /** Last fully measured interval */
-    WheelSpeedState state;
+    uint32_t lastInterval;
     /** Current state of the wheel */
-    bool magnetInLastRead;
+    WheelSpeedState state;
     /** Flag to check if the sensor is high */
-
-    IO::GPIO::State MAGNET_DETECTED_STATE = IO::GPIO::State::LOW;
+    bool magnetInLastRead;
+    /** Flag to check whether the magnet was just detected */
+    bool magnetWasDetected;
+    /** The magnet is detected if the pin is low */
+    const IO::GPIO::State MAGNET_DETECTED_STATE = IO::GPIO::State::LOW;
 };
 
 }// namespace WSS::DEV
