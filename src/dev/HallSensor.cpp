@@ -12,7 +12,7 @@ constexpr uint32_t THRESHOLD = 5000;// Threshold for wheel speed
 
 namespace WSS::DEV {
 
-HallSensor::HallSensor(IO::GPIO& gpio, uint32_t wheelRadius) : gpio((IO::GPIO&) gpio), wheelRadius(wheelRadius) {
+HallSensor::HallSensor(IO::GPIO& gpio, uint32_t wheelRadius, uint32_t numberOfMagnets) : gpio((IO::GPIO&) gpio), wheelRadius(wheelRadius), numberOfMagnets(numberOfMagnets) {
     this->prevTime = 0;
     this->lastInterval = 0;
     this->state = WheelSpeedState::STOP;
@@ -113,7 +113,7 @@ uint32_t HallSensor::getSpeed() {
      * RPM * (circumference in inches (2 * pi * wheelRadius) / 1 rotation) * (1 mile / 63360 inches) * (60 minutes / hour)
      * is what calculates the speed in mph.
      */
-    const uint32_t speed = static_cast<uint32_t>(rpm * wheelRadius * 2 * 3.1415926535 * 60) / 63360;
+    const uint32_t speed = static_cast<uint32_t>(rpm * ((wheelRadius * 2 * 3.1415926535) / numberOfMagnets) * 60) / 63360;
 
     return speed;
 }

@@ -9,6 +9,7 @@ namespace WSS::DEV {
 class HallSensor {
 
 public:
+    /** The state of the wheel whether it is stopped, starting to spin, or spinning */
     enum class WheelSpeedState {
         STOP,        // First pulse or wheel is dead
         INITIALIZING,// Setting speed based on first reading
@@ -16,7 +17,7 @@ public:
     };
 
     // Constructor (take a GPIO instance and the radius of the wheel)
-    HallSensor(IO::GPIO& gpio, uint32_t wheelRadius);
+    HallSensor(IO::GPIO& gpio, uint32_t wheelRadius, uint32_t numberOfMagnets);
 
     void update();// Update the wheel speed
 
@@ -31,6 +32,8 @@ private:
     IO::GPIO& gpio;
     /** Radius of the wheel */
     uint32_t wheelRadius;
+    /** Number of magnets in a wheel */
+    uint32_t numberOfMagnets;
     /** Previous time for calculating delta time */
     uint32_t prevTime;
     /** Last fully measured interval */

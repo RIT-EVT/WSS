@@ -57,9 +57,11 @@ int main() {
     // Wheel radius in inches
     constexpr uint32_t WHEEL_RADIUS = 15;
     constexpr uint32_t BACK_WHEEL_RADIUS = 15;
+    constexpr uint32_t WHEEL_NUM_OF_MAGNETS = 1;
+    constexpr uint32_t BACK_WHEEL_NUM_OF_MAGNETS = 1;
 
-    WSS::DEV::HallSensor hallSensor1(frontInterruptGPIO, WHEEL_RADIUS);
-    WSS::DEV::HallSensor hallSensor2(backInterruptGPIO, BACK_WHEEL_RADIUS);
+    WSS::DEV::HallSensor hallSensor1(frontInterruptGPIO, WHEEL_RADIUS, WHEEL_NUM_OF_MAGNETS);
+    WSS::DEV::HallSensor hallSensor2(backInterruptGPIO, BACK_WHEEL_RADIUS, BACK_WHEEL_NUM_OF_MAGNETS);
 
     // Setup WSS
     WSS::WSS wss(hallSensor1, hallSensor2);
