@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "libs/EVT-core/samples/lcd/lcd-segment",
+		"source" : "libs/EVT-core/samples/lcd/lcd-segment"
+	}
+}

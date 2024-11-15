@@ -113,7 +113,7 @@ uint32_t HallSensor::getSpeed() {
      * RPM * (circumference in inches (2 * pi * wheelRadius) / 1 rotation) * (1 mile / 63360 inches) * (60 minutes / hour)
      * is what calculates the speed in mph.
      */
-    const uint32_t speed = static_cast<uint32_t>(rpm * ((wheelRadius * 2 * 3.1415926535) / numberOfMagnets) * 60) / 63360;
+    const uint32_t speed = (rpm * ((wheelRadius * 2 * 3142) / numberOfMagnets) * 60) / 63360000;
 
     return speed;
 }

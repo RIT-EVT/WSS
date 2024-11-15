@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "libs/EVT-core/samples/spi/ADXL345",
+		"source" : "libs/EVT-core/samples/spi/ADXL345"
+	}
+}

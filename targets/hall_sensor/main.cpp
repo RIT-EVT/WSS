@@ -1,5 +1,5 @@
 /**
- * This is a test program for the hall sensor.
+ * This is a test program for the Hall Effect sensor.
  */
 
 #include <EVT/io/GPIO.hpp>
