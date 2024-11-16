@@ -8,10 +8,8 @@ namespace log = EVT::core::log;
 
 namespace WSS {
 
-WSS::WSS(DEV::HallSensor& hallSensor1, DEV::HallSensor& hallSensor2) {
-    this->hallSensors[0] = &hallSensor1;
-    this->hallSensors[1] = &hallSensor2;
-}
+WSS::WSS(DEV::HallSensor& hallSensor1, DEV::HallSensor& hallSensor2)
+    : hallSensors{ &hallSensor1, &hallSensor2 } {}
 
 CO_OBJ_T* WSS::getObjectDictionary() {
     return objectDictionary;

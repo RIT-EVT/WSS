@@ -17,13 +17,12 @@ namespace WSS {
  */
 class WSS : public CANDevice {
 public:
+    /**  */
     WSS(DEV::HallSensor& hallSensor1, DEV::HallSensor& hallSensor2);
 
     static constexpr uint16_t NODE_ID = 8;
 
-    /**
-     * Updates the temperature values in an array and updates the error array from the TMU object.
-     */
+    /** Updates the wheel speed values for all hallsensors in an array */
     void process();
 
     CO_OBJ_T* getObjectDictionary() override;
@@ -36,7 +35,7 @@ private:
     /** This is an array of the hall sensors for the front and back sensor */
     DEV::HallSensor* hallSensors[NUM_HALLSENSORS]{};
 
-    /** This is an array of wheel speeds for the front and back wheel */
+    /** This is an array of wheel speeds for the front and back wheel in miles per hour */
     uint16_t wheelSpeeds[NUM_HALLSENSORS] = {0, 0};
 
     /**

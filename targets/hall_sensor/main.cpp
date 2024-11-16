@@ -33,30 +33,18 @@ int main() {
     constexpr uint32_t WHEEL_RADIUS = 15;
     constexpr uint32_t NUM_OF_MAGNETS = 1;
 
-    uint32_t counter = 0;
     WSS::DEV::HallSensor hallSensor(interruptGPIO, WHEEL_RADIUS, NUM_OF_MAGNETS);
 
-    uint16_t i = 0;
+    uint32_t debugPrintTime = HAL_GetTick();
 
     // Main loop
     while (1) {
-        //Check for GPIO READ TESTING
-        if (interruptGPIO.readPin() == IO::GPIO::State::LOW) {
-            uart.printf("GPIO PA_1 PIN LOW DETECTED\r\n");
-            uart.printf("Counter: %d\r\n", counter);
-            counter++;
-        }
-
-        if (interruptGPIO2.readPin() == IO::GPIO::State::LOW) {
-            uart.printf("GPIO PA_0 PIN 2 LOW DETECTED\r\n");
-            uart.printf("Counter: %d\r\n", counter);
-            counter++;
-        }
-
         hallSensor.update();
 
-        if (i++ == 0) {
-            uart.printf("Wheel speed (in/s): %d\r\n", hallSensor.getRawInterval());
+        // Prints out the wheel speed in miles per hour every 5 times a second
+        if (HAL_GetTick() - debugPrintTime > 200) {
+            debugPrintTime = HAL_GetTick();
+            uart.printf("Wheel speed (miles/hour): %d\r\n", hallSensor.getSpeed());
         }
     }
 }
