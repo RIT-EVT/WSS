@@ -17,7 +17,7 @@ namespace WSS {
  */
 class WSS : public CANDevice {
 public:
-    /**  */
+    /** Initializes hallsensors into an array */
     WSS(DEV::HallSensor& hallSensor1, DEV::HallSensor& hallSensor2);
 
     static constexpr uint16_t NODE_ID = 8;

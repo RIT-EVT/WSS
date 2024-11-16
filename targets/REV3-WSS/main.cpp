@@ -22,15 +22,6 @@ void canInterrupt(IO::CANMessage& message, void* priv) {
     EVT::core::types::FixedQueue<CANOPEN_QUEUE_SIZE, IO::CANMessage>* queue =
         (EVT::core::types::FixedQueue<CANOPEN_QUEUE_SIZE, IO::CANMessage>*) priv;
 
-    // Log raw received data
-    log::LOGGER.log(log::Logger::LogLevel::DEBUG, "Got RAW message from %X of length %d with data: ", message.getId(), message.getDataLength());
-
-    uint8_t* data = message.getPayload();
-    for (int i = 0; i < message.getDataLength(); i++) {
-        log::LOGGER.log(log::Logger::LogLevel::DEBUG, "%X ", *data);
-        data++;
-    }
-
     if (queue != nullptr)
         queue->append(message);
 }
