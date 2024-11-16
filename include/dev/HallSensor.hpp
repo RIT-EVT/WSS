@@ -11,9 +11,9 @@ class HallSensor {
 public:
     /** The state of the wheel whether it is stopped, starting to spin, or spinning */
     enum class WheelSpeedState {
-        STOP,        /** First pulse or wheel is dead */
-        INITIALIZING,/** Setting speed based on first reading */
-        MAINTAIN,    /** Wheel is spinning at a constant speed or speeding up */
+        STOP,         /** First pulse or wheel is dead */
+        INITIALIZING, /** Setting speed based on first reading */
+        MAINTAIN,     /** Wheel is spinning at a constant speed or speeding up */
     };
 
     /** Constructor (take a GPIO instance and the radius of the wheel) */
