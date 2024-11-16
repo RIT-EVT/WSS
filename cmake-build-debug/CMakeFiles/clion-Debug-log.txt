@@ -1,0 +1,38 @@
+/Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Applications/CLion.app/Contents/bin/ninja/mac/aarch64/ninja -G Ninja -S /Users/aiden/Desktop/EVT-repos/WSS -B /Users/aiden/Desktop/EVT-repos/WSS/cmake-build-debug
+-- STM32F334x8 targeted
+CMake Warning (dev) at /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.29/Modules/GNUInstallDirs.cmake:253 (message):
+  Unable to determine default CMAKE_INSTALL_LIBDIR directory because no
+  target architecture is known.  Please enable at least one language before
+  including GNUInstallDirs.
+Call Stack (most recent call first):
+  libs/EVT-core/cmake/evt-core_compiler.cmake:74 (include)
+  libs/EVT-core/CMakeLists.txt:13 (include)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found clang-format: /opt/homebrew/bin/clang-format
+-- The CXX compiler identification is GNU 12.3.1
+-- The C compiler identification is GNU 12.3.1
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /opt/homebrew/bin/arm-none-eabi-g++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /opt/homebrew/bin/arm-none-eabi-gcc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+CMake Warning (dev) at /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.29/Modules/GNUInstallDirs.cmake:253 (message):
+  Unable to determine default CMAKE_INSTALL_LIBDIR directory because no
+  target architecture is known.  Please enable at least one language before
+  including GNUInstallDirs.
+Call Stack (most recent call first):
+  libs/EVT-core/libs/HALf3/CMakeLists.txt:6 (include)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- The ASM compiler identification is GNU
+-- Found assembler: /opt/homebrew/bin/arm-none-eabi-gcc
+-- STM32F334x8 targeted
+-- Configuring done (1.3s)
+-- Generating done (0.0s)
+-- Build files have been written to: /Users/aiden/Desktop/EVT-repos/WSS/cmake-build-debug

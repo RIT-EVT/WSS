@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "libs/EVT-core/samples/lcd/lcd-counter",
+		"source" : "libs/EVT-core/samples/lcd/lcd-counter"
+	}
+}

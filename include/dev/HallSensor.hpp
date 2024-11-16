@@ -11,20 +11,20 @@ class HallSensor {
 public:
     /** The state of the wheel whether it is stopped, starting to spin, or spinning */
     enum class WheelSpeedState {
-        STOP,        // First pulse or wheel is dead
-        INITIALIZING,// Setting speed based on first reading
-        MAINTAIN,    // Wheel is spinning at a constant speed or speeding up
+        STOP,        /** First pulse or wheel is dead */
+        INITIALIZING,/** Setting speed based on first reading */
+        MAINTAIN,    /** Wheel is spinning at a constant speed or speeding up */
     };
 
-    // Constructor (take a GPIO instance and the radius of the wheel)
+    /** Constructor (take a GPIO instance and the radius of the wheel) */
     HallSensor(IO::GPIO& gpio, uint32_t wheelRadius, uint32_t numberOfMagnets);
 
-    void update();// Update the wheel speed
+    void update();// Update the sensor interval
 
-    // Get the current speed of the wheel
+    /** Get the current speed of the wheel */
     uint32_t getSpeed();
 
-    // Get the last interval of one full rotation of the wheel
+    /** Get the last interval of one full rotation of the wheel */
     uint32_t getRawInterval();
 
 private:
