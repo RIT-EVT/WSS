@@ -31,9 +31,10 @@ int main() {
     // Setup Hall Sensor
     // Wheel radius in inches
     constexpr uint32_t WHEEL_RADIUS = 15;
+    constexpr uint32_t NUM_OF_MAGNETS = 1;
 
     uint32_t counter = 0;
-    WSS::DEV::HallSensor hallSensor(interruptGPIO, WHEEL_RADIUS);
+    WSS::DEV::HallSensor hallSensor(interruptGPIO, WHEEL_RADIUS, NUM_OF_MAGNETS);
 
     uint16_t i = 0;
 
