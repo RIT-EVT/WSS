@@ -19,15 +19,6 @@ HallSensor::HallSensor(IO::GPIO& gpio, uint32_t wheelRadius, uint32_t numberOfMa
     this->magnetInLastRead = false;
 }
 
-/**
- *
- * 1: Use a separate nucleo to send a 3.3V pulse to the nucleo running THIS every x amount of time to test
- * the algorithm reliably. by setting whatever pin to high and then to low (good luck).
- *  coded in the 'blink' part of rampup because i didn't know how to make new project thing configuration
- * 2: FIX THE ALGORITHM
- *
- */
-
 void HallSensor::update() {
     uint32_t now = HAL_GetTick();
     uint32_t elapsedTime = now - prevTime;
