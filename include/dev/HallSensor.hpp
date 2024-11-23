@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HALLSENSOR_HPP
+#define HALLSENSOR_HPP
 
 #include <EVT/io/GPIO.hpp>
 
@@ -6,12 +7,14 @@ namespace IO = EVT::core::IO;
 
 namespace WSS::DEV {
 
+/**
+ * This is the class for each individual front and back HallSensor
+ */
 class HallSensor {
-
 public:
     /** The state of the wheel whether it is stopped, starting to spin, or spinning */
     enum class WheelSpeedState {
-        STOP,         /** First pulse or wheel is dead */
+        STOP,         /** Wheel is not moving */
         INITIALIZING, /** Setting speed based on first reading */
         MAINTAIN,     /** Wheel is spinning at a constant speed or speeding up */
     };
@@ -42,10 +45,15 @@ private:
     WheelSpeedState state;
     /** Flag to check if the sensor is high */
     bool magnetInLastRead;
-    /** Flag to check whether the magnet was just detected */
-    bool magnetWasDetected;
     /** The magnet is detected if the pin is low */
-    const IO::GPIO::State MAGNET_DETECTED_STATE = IO::GPIO::State::LOW;
+    static constexpr IO::GPIO::State MAGNET_DETECTED_STATE = IO::GPIO::State::LOW;
+    /**
+     * The threshold in milliseconds for how long a magnet has not been detected before
+     * setting the WheelSpeedState to STOP
+     */
+    static constexpr uint32_t THRESHOLD = 5000;
 };
 
 }// namespace WSS::DEV
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef WSS_HPP
+#define WSS_HPP
 
 #include <EVT/io/CANDevice.hpp>
 #include <EVT/io/CANOpenMacros.hpp>
@@ -6,9 +7,9 @@
 #include <co_core.h>
 #include <dev/HallSensor.hpp>
 
-#define NUM_HALLSENSORS 2
+constexpr uint8_t NUM_HALLSENSORS = 2;
 
-using namespace EVT::core::IO;
+namespace IO = EVT::core::IO;
 
 namespace WSS {
 
@@ -17,7 +18,12 @@ namespace WSS {
  */
 class WSS : public CANDevice {
 public:
-    /** Initializes hallsensors into an array */
+  /**
+    * Initialize WSS driver
+    *
+    * @param[in] hallSensor1 Front Hall sensor
+    * @param[in] hallSensor2 Back Hall sensor
+    */
     WSS(DEV::HallSensor& hallSensor1, DEV::HallSensor& hallSensor2);
 
     static constexpr uint16_t NODE_ID = 8;
@@ -37,6 +43,9 @@ private:
 
     /** This is an array of wheel speeds for the front and back wheel in miles per hour */
     uint16_t wheelSpeeds[NUM_HALLSENSORS] = {0, 0};
+
+    /** Time in tick value that is used to print out wheel speeds five times a second */
+    uint32_t debugPrintTime;
 
     /**
      * Object Dictionary Size
@@ -62,11 +71,13 @@ private:
 
         // TPDO 0 DATA LINKS
         DATA_LINK_START_KEY_21XX(0, 2),
-        DATA_LINK_21XX(0x00, 1, CO_TUNSIGNED16, (uintptr_t) wheelSpeeds[0]),
-        DATA_LINK_21XX(0x00, 2, CO_TUNSIGNED16, (uintptr_t) wheelSpeeds[1]),
+        DATA_LINK_21XX(0x00, 1, CO_TUNSIGNED16, &wheelSpeeds[0]),
+        DATA_LINK_21XX(0x00, 2, CO_TUNSIGNED16, &wheelSpeeds[1]),
 
         CO_OBJ_DICT_ENDMARK,
     };
 };
 
 }// namespace WSS
+
+#endif

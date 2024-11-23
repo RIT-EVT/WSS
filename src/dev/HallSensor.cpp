@@ -2,13 +2,8 @@
 #include <EVT/utils/log.hpp>
 #include <HALf3/stm32f3xx_hal.h>
 #include <dev/HallSensor.hpp>
-#include <string>
-#include <valarray>
 
 namespace IO = EVT::core::IO;
-
-// TODO Tune these values
-constexpr uint32_t THRESHOLD = 5000;// Threshold for wheel speed
 
 namespace WSS::DEV {
 
@@ -24,27 +19,24 @@ void HallSensor::update() {
     uint32_t elapsedTime = now - prevTime;
 
     // The magnet is detected if the previous gpio pin reading is the same as the current gpio
-    // pin reading
-    const bool magnetDetected = gpio.readPin() == MAGNET_DETECTED_STATE;
-    bool magnetDetectedNow = false;
-    if (!magnetWasDetected && magnetDetected != magnetInLastRead && magnetDetected) {
-        magnetWasDetected = true;
-        magnetDetectedNow = true;
-    } else if (magnetWasDetected && magnetDetected == magnetInLastRead) {
-        magnetWasDetected = false;
+    // pin reading, and if the pin is LOW
+    const bool magnetReadLow = gpio.readPin() == MAGNET_DETECTED_STATE;
+    bool magnetDetected = false;
+    if (magnetReadLow && magnetInLastRead != magnetReadLow) {
+        magnetDetected = true;
     }
-    magnetInLastRead = magnetDetected;
+    magnetInLastRead = magnetReadLow;
 
     switch (state) {
     case WheelSpeedState::STOP:
-        if (magnetDetectedNow) {
+        if (magnetDetected) {
             prevTime = now;
             state = WheelSpeedState::INITIALIZING;
         }
         break;
 
     case WheelSpeedState::INITIALIZING:
-        if (magnetDetectedNow) {
+        if (magnetDetected) {
             // If the magnet is detected for the second time, record the time and the first
             // interval and enter the maintain state
             lastInterval = elapsedTime;
@@ -57,22 +49,23 @@ void HallSensor::update() {
         if (elapsedTime > THRESHOLD) {
             state = WheelSpeedState::STOP;
             prevTime = 0;
+            lastInterval = 0;
         }
         break;
 
     case WheelSpeedState::MAINTAIN:
-        if (magnetDetectedNow) {
+        if (magnetDetected) {
             // If the magnet is newly detected, record the time and interval
             lastInterval = elapsedTime;
             prevTime = now;
-        }
 
-        // If the magnet hasn't been detected for a significant amount of time, go back to the stop
-        // state
-        if (elapsedTime > THRESHOLD) {
+            // If the magnet hasn't been detected for a significant amount of time, go back to the stop
+            // state
+        } else if (elapsedTime > THRESHOLD) {
             state = WheelSpeedState::STOP;
             prevTime = 0;
             lastInterval = 0;
+
             // If the elapsed time since the magnet was last detected exceeds the last interval, record
             // the last interval as if the magnet was just detected because the bike is slowing
             // down, but the exact speed can't be calculated
@@ -88,7 +81,7 @@ uint32_t HallSensor::getRawInterval() {
 }
 
 uint32_t HallSensor::getSpeed() {
-    if (state == WheelSpeedState::STOP) {
+    if (state != WheelSpeedState::MAINTAIN) {
         // The wheel isn't moving, so its speed is zero.
         return 0;
     }
@@ -98,13 +91,13 @@ uint32_t HallSensor::getSpeed() {
      * lastInterval is the time that it takes for one full revolution of the wheel
      * in milliseconds, so converting that to RPM is just dividing 60000 by lastInterval.
      */
-    const uint32_t rpm = 60000 / lastInterval;
+    const uint32_t rpm = 60000 / lastInterval / numberOfMagnets;
     /*
      * The speed of the bike in miles per hour.
      * RPM * (circumference in inches (2 * pi * wheelRadius) / 1 rotation) * (1 mile / 63360 inches) * (60 minutes / hour)
      * is what calculates the speed in mph.
      */
-    const uint32_t speed = (rpm * ((wheelRadius * 2 * 3142) / numberOfMagnets) * 60) / 63360000;
+    const uint32_t speed = rpm * wheelRadius * 2 * 3142 * 60 / 63360000;
 
     return speed;
 }

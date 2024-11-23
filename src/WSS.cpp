@@ -9,13 +9,11 @@ namespace log = EVT::core::log;
 namespace WSS {
 
 WSS::WSS(DEV::HallSensor& hallSensor1, DEV::HallSensor& hallSensor2)
-    : hallSensors{&hallSensor1, &hallSensor2} {}
+    : hallSensors{&hallSensor1, &hallSensor2}, debugPrintTime(HAL_GetTick()) {}
 
 CO_OBJ_T* WSS::getObjectDictionary() {
     return objectDictionary;
 }
-
-uint32_t debugPrintTime = HAL_GetTick();
 
 void WSS::process() {
     for (uint8_t i = 0; i < NUM_HALLSENSORS; i++) {
@@ -24,9 +22,10 @@ void WSS::process() {
     }
 
     // Prints out the wheel speed in miles per hour every 5 times a second
-    if (HAL_GetTick() - debugPrintTime > 200) {
+    if (HAL_GetTick() - debugPrintTime > 1000) {
         debugPrintTime = HAL_GetTick();
-        log::LOGGER.log(log::Logger::LogLevel::DEBUG, ("Wheelspeed[1]: " + std::to_string(wheelSpeeds[0])).c_str());
+        log::LOGGER.log(log::Logger::LogLevel::DEBUG, "Wheelspeed[0]:%d", wheelSpeeds[0]);
+        log::LOGGER.log(log::Logger::LogLevel::DEBUG, "Wheelspeed[1]:%d", wheelSpeeds[1]);
     }
 }
 
