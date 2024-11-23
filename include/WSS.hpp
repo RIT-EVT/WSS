@@ -18,7 +18,7 @@ namespace WSS {
  */
 class WSS : public CANDevice {
 public:
-  /**
+    /**
     * Initialize WSS driver
     *
     * @param[in] hallSensor1 Front Hall sensor
