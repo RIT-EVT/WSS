@@ -21,10 +21,7 @@ void HallSensor::update() {
     // The magnet is detected if the previous gpio pin reading is the same as the current gpio
     // pin reading, and if the pin is LOW
     const bool magnetReadLow = gpio.readPin() == MAGNET_DETECTED_STATE;
-    bool magnetDetected = false;
-    if (magnetReadLow && magnetInLastRead != magnetReadLow) {
-        magnetDetected = true;
-    }
+    const bool magnetDetected = magnetReadLow && !magnetInLastRead;
     magnetInLastRead = magnetReadLow;
 
     switch (state) {
@@ -88,8 +85,9 @@ uint32_t HallSensor::getSpeed() {
 
     /*
      * The speed of the wheel in revolutions per minute.
-     * lastInterval is the time that it takes for one full revolution of the wheel
-     * in milliseconds, so converting that to RPM is just dividing 60000 by lastInterval.
+     * lastInterval is the time that it takes for one magnet detection to the next
+     * in milliseconds, so converting that to RPM is 60000 by lastInterval and then
+     * dividing again by numberOfMagnets.
      */
     const uint32_t rpm = 60000 / lastInterval / numberOfMagnets;
     /*

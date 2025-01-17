@@ -16,10 +16,16 @@ public:
     enum class WheelSpeedState {
         STOP,         /** Wheel is not moving */
         INITIALIZING, /** Setting speed based on first reading */
-        MAINTAIN,     /** Wheel is spinning at a constant speed or speeding up */
+        MAINTAIN,     /** Wheel is spinning */
     };
 
-    /** Constructor (take a GPIO instance and the radius of the wheel) */
+    /**
+    * Initialize Hall Sensor
+    *
+    * @param[in] gpio Pin for the sensor
+    * @param[in] wheelRadius Radius of the wheel that this sensor is on
+    * @param[in] numberOfMagnets Number of magnets on this wheel
+    */
     HallSensor(IO::GPIO& gpio, uint32_t wheelRadius, uint32_t numberOfMagnets);
 
     void update();// Update the sensor interval
@@ -43,9 +49,9 @@ private:
     uint32_t lastInterval;
     /** Current state of the wheel */
     WheelSpeedState state;
-    /** Flag to check if the sensor is high */
+    /** Flag to check if the magnet is detected */
     bool magnetInLastRead;
-    /** The magnet is detected if the pin is low */
+    /** The state that the magnet is detected */
     static constexpr IO::GPIO::State MAGNET_DETECTED_STATE = IO::GPIO::State::LOW;
     /**
      * The threshold in milliseconds for how long a magnet has not been detected before
